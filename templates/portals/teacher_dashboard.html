@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block body_content %}
+<div style="padding: 130px 6% 60px; max-width: 1500px; margin: 0 auto;">
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-box alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="glass-panel" style="padding: 2.5rem; margin-bottom: 3rem; border-left: 6px solid var(--magenta-vibe);">
+        <span style="text-transform: uppercase; font-weight: 800; color: var(--magenta-vibe); letter-spacing: 1px; font-size: 0.85rem;">Authorized Faculty Working Space</span>
+        <h1 style="font-family: 'Outfit'; font-size: 2.5rem; font-weight: 900; margin-top: 5px;">Syllabus Content Sync Desk</h1>
+        <p style="color: var(--text-dim);">Institution Profile Context: <b>{{ school.name }}</b></p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        <div class="glass-panel" style="padding: 2rem;">
+            <h2 style="font-family:'Outfit'; font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--cyan-glow);">Publish New ECZ Syllabus Resource</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Target Course Assignment</label>
+                    <select name="subject_select" style="width:100%; padding:12px; background:#000; border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                        {% for sub in subjects %}
+                            <option value="{{ sub.id }}">{{ sub.name }} [Grade {{ sub.grade_level }}] ({{ sub.ecz_code }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Syllabus Unit Title</label>
+                    <input type="text" name="title" required placeholder="e.g. Quadratic Equations Matrix" style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                </div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Verified External YouTube Resource URL (E-Learning Direct Link)</label>
+                    <input type="url" name="youtube_url" placeholder="https://youtube.com/watch?v=..." style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Detailed Lesson Core / Educational Content Body</label>
+                    <textarea name="content" required rows="6" style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px; font-family:inherit;"></textarea>
+                </div>
+                <button type="submit" class="glow-btn" style="width:100%; background:var(--magenta-vibe); color:#FFF;">Broadcast Lesson Content</button>
+            </form>
+        </div>
+
+        <div class="glass-panel" style="padding: 2rem; max-height: 640px; overflow-y: auto;">
+            <h2 style="font-family:'Outfit'; font-size: 1.5rem; margin-bottom: 1.5rem;">Synchronized Curricular Entries</h2>
+            {% if not topics %}
+                <p style="color:var(--text-dim);">No active educational content found inside system registries.</p>
+            {% else %}
+                {% for top in topics %}
+                    <div style="padding:15px; background:rgba(255,255,255,0.02); border:1px solid var(--border-rim); border-radius:12px; margin-bottom:1rem;">
+                        <span style="font-size:0.75rem; color:var(--neon-electric); font-weight:700;">{{ top.subject.ecz_code }} — Grade {{ top.subject.grade_level }}</span>
+                        <h4 style="font-family:'Outfit'; font-size:1.15rem; margin:4px 0;">{{ top.title }}</h4>
+                        {% if top.youtube_resource_url %}
+                            <p style="font-size:0.8rem; color:var(--cyan-glow);">Linked Video: {{ top.youtube_resource_url }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

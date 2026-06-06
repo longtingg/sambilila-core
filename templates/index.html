@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block body_content %}
+<style>
+    .ambient-sky { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; z-index: -1; pointer-events: none; }
+    .plasma-node { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.45; }
+    .pn-1 { width: 500px; height: 500px; background: var(--purple-deep); top: -10%; left: -5%; }
+    .pn-2 { width: 600px; height: 600px; background: var(--magenta-vibe); bottom: -15%; right: -5%; }
+    .pn-3 { width: 400px; height: 400px; background: var(--cyan-glow); top: 40%; left: 50%; }
+
+    .hero-layout { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 7% 60px; position: relative; }
+    .hero-layout h1 { font-family: 'Outfit', sans-serif; font-size: clamp(2.8rem, 6vw, 5.8rem); font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 1.5rem; }
+    .chroma-gradient { background: linear-gradient(135deg, #FFF 30%, var(--cyan-glow) 70%, var(--neon-electric)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .mission-statement { font-size: 1.2rem; color: var(--text-dim); max-width: 800px; line-height: 1.7; margin-bottom: 3.5rem; }
+    
+    .scholar-panel { border-left: 5px solid var(--neon-electric); padding: 2rem; border-radius: 4px 24px 24px 4px; max-width: 850px; background: rgba(255,255,255,0.02); text-align: left; margin-bottom: 4.5rem; }
+    .quote-string { font-size: 1.4rem; font-weight: 600; line-height: 1.5; color: #FFF; font-style: italic; margin-bottom: 12px; font-family: 'Outfit', sans-serif; }
+    .quote-attribution { color: var(--neon-electric); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+
+    .tenant-gateways { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; width: 100%; max-width: 1300px; }
+    .gateway-card { padding: 2.5rem; text-align: left; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); text-decoration: none; color: inherit; position: relative; }
+    .gateway-card:hover { transform: scale(1.03) translateY(-5px); border-color: var(--neon-electric); }
+    .gateway-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; margin-bottom: 10px; font-weight: 700; }
+    .gateway-card p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.5; }
+    .pill-indicator { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
+</style>
+
+<div class="ambient-sky">
+    <div class="plasma-node pn-1"></div>
+    <div class="plasma-node pn-2"></div>
+    <div class="plasma-node pn-3"></div>
+</div>
+
+<main class="hero-layout">
+    <h1>Unified Architecture For <br><span class="chroma-gradient">Zambian Academic Tenancies</span></h1>
+    
+    <p class="mission-statement">
+        Sambilila Core functions as a sovereign, multi-tenant learning management framework architected to serve consolidated environments across secondary and tertiary frameworks. Engineered explicitly to align with the Examination Council of Zambia (ECZ) and Ministry of Education benchmarks, our infrastructure isolates student registries, centralizes continuous assessments, and supplies interactive syllabus-indexed digital resources through structural, secure tokened access portals.
+    </p>
+
+    <div class="scholar-panel">
+        <p class="quote-string" id="dynamic-quote">"The power to build our nation lies in the minds of our youth and the strength of our education."</p>
+        <p class="quote-attribution" id="dynamic-author">Dr. Kenneth Kaunda</p>
+    </div>
+
+    <div class="tenant-gateways">
+        <a href="{% url 'login' %}" class="glass-panel gateway-card">
+            <span class="pill-indicator" style="background:rgba(112, 0, 255, 0.2); color:var(--purple-deep);">System Level</span>
+            <h3>Administration Console</h3>
+            <p>Deploy individual tenancies, allocate structural master codes, configure ECZ center matrices, and review data census volumes.</p>
+        </a>
+        <a href="{% url 'login' %}" class="glass-panel gateway-card">
+            <span class="pill-indicator" style="background:rgba(255, 0, 122, 0.2); color:var(--magenta-vibe);">Faculty Access</span>
+            <h3>Educator Terminal</h3>
+            <p>Publish localized lesson units, verify student attendance metrics, and input definitive continuous assessments matching required school profiles.</p>
+        </a>
+        <a href="{% url 'login' %}" class="glass-panel gateway-card">
+            <span class="pill-indicator" style="background:rgba(0, 240, 255, 0.2); color:var(--cyan-glow);">Learner Desk</span>
+            <h3>Student Workspace</h3>
+            <p>Review standard lesson documentation, track termly grading scripts, and stream curated syllabus e-learning links assigned directly by teachers.</p>
+        </a>
+    </div>
+</main>
+
+<script>
+    const zambianQuotes = [
+        { q: "\"The power to build our nation lies in the minds of our youth and the strength of our education.\"", a: "Dr. Kenneth Kaunda — Founding Representative & Statesman" },
+        { q: "\"We cannot develop without knowledge. Structural educational training is the absolute key to our economic liberation.\"", a: "Levy Mwanawasa — Academic Juris & President" },
+        { q: "\"To be a scholar is to dedicate yourself to the relentless pursuit of logical truth for the complete improvement of our society.\"", a: "Prof. Lameck Goma — Renowned Educator & Biologist" },
+        { q: "\"A nation's true sovereign reserve is not found in its raw minerals beneath the ground, but inside the minds of its educated citizens.\"", a: "Dr. Dambisa Moyo — Global Economist & Author" }
+    ];
+    const selection = zambianQuotes[Math.floor(Math.random() * zambianQuotes.length)];
+    document.getElementById('dynamic-quote').innerText = selection.q;
+    document.getElementById('dynamic-author').innerText = selection.a;
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block body_content %}
+<div style="padding: 130px 6% 60px; max-width: 1500px; margin: 0 auto;">
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-box {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="glass-panel" style="padding: 2.5rem; margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--purple-deep);">
+        <div>
+            <span style="text-transform: uppercase; font-weight: 800; color: var(--purple-deep); letter-spacing: 1px; font-size: 0.85rem;">Tenant Domain Secure Layer</span>
+            <h1 style="font-family: 'Outfit'; font-size: 2.6rem; font-weight: 900; margin-top: 5px;">{{ school.name }}</h1>
+            <p style="color: var(--text-dim); margin-top: 5px;">ECZ National Center Registry ID: <b style="color: #FFF;">{{ school.center_code }}</b></p>
+        </div>
+        <div style="text-align: right;">
+            <p style="color: var(--text-dim); font-size: 0.9rem;">System Classification</p>
+            <p style="font-size: 1.2rem; font-weight: 700; color: var(--cyan-glow);">Primary Client Admin Area</p>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        <div class="glass-panel" style="padding: 2rem;">
+            <h2 style="font-family: 'Outfit'; font-size: 1.6rem; margin-bottom: 1.5rem; color: var(--neon-electric);">Provision New Account Credentials</h2>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem; color:var(--text-dim);">Account Type / Authority Allocation</label>
+                    <select name="action" style="width:100%; padding:12px; background:#000; border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                        <option value="add_teacher">Educator Faculty (Teacher)</option>
+                        <option value="add_student">Learner Profile (Student)</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-size:0.85rem;">First Legal Name</label>
+                        <input type="text" name="first_name" required style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Last Legal Name</label>
+                        <input type="text" name="last_name" required style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Allocate Unique System ID (Username)</label>
+                    <input type="text" name="username" required placeholder="e.g. TCH-MWANSA or STU-10922" style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                </div>
+                <div style="margin-bottom: 2rem;">
+                    <label style="display:block; margin-bottom:6px; font-size:0.85rem;">Initial Security Passkey Entry</label>
+                    <input type="password" name="password" required style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-rim); color:#FFF; border-radius:8px;">
+                </div>
+                <button type="submit" class="glow-btn" style="width: 100%;">Sign & Save User Record</button>
+            </form>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            <div class="glass-panel" style="padding: 2rem; max-height: 320px; overflow-y: auto;">
+                <h3 style="font-family:'Outfit'; font-size: 1.3rem; margin-bottom: 1rem; color:var(--magenta-vibe);">Faculty Registry (Teachers)</h3>
+                {% if not teachers %}
+                    <p style="color:var(--text-dim); font-size:0.9rem;">No educator registry rows active.</p>
+                {% else %}
+                    {% for t in teachers %}
+                        <div style="padding: 10px; border-bottom: 1px solid var(--border-rim); display:flex; justify-content:space-between;">
+                            <span><b>{{ t.get_full_name }}</b></span>
+                            <span style="font-family:monospace; color:var(--text-dim);">ID: {{ t.username }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="glass-panel" style="padding: 2rem; max-height: 320px; overflow-y: auto;">
+                <h3 style="font-family:'Outfit'; font-size: 1.3rem; margin-bottom: 1rem; color:var(--cyan-glow);">Active Student Registry</h3>
+                {% if not students %}
+                    <p style="color:var(--text-dim); font-size:0.9rem;">No learner registry rows active.</p>
+                {% else %}
+                    {% for s in students %}
+                        <div style="padding: 10px; border-bottom: 1px solid var(--border-rim); display:flex; justify-content:space-between;">
+                            <span><b>{{ s.get_full_name }}</b></span>
+                            <span style="font-family:monospace; color:var(--text-dim);">ID: {{ s.username }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
