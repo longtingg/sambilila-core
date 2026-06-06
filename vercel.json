@@ -7,6 +7,10 @@
       "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     }
   ],
+  "env": {
+    "DATABASE_URL": "PASTE_YOUR_NEON_DATABASE_URL_HERE",
+    "DEBUG": "False"
+  },
   "routes": [
     {
       "src": "/static/(.*)",
